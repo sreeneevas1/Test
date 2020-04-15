@@ -1,0 +1,80 @@
+Public class {
+
+MetadataService.MetadataPort metadataservice = new MetadataService.MetadataPort();
+metadataservice.SessionHeader = new MetadataService.SessionHeader_element();
+metadataservice.SessionHeader.sessionId = UserInfo.getSessionId();
+String picklistapiname = 'Account.Account_Assignmen__c';
+List<MetadataService.CustomField> customfields = new List<MetadataService.CustomField>();
+
+list<string> listcontrollingFieldValue = new list<string>{'XYZ'};
+    
+List<MetadataService.CustomValue> values = new List<MetadataService.CustomValue>();
+
+MetadataService.ValueSettings ValueSettg = new MetadataService.ValueSettings();
+ValueSettg.controllingFieldValue = listcontrollingFieldValue;
+ValueSettg.valueName = 'test ten field';
+    
+    
+List<MetadataService.ValueSettings> ValueSettingss = new List<MetadataService.ValueSettings>();
+ValueSettingss.add(ValueSettg);
+
+MetadataService.CustomField customField = new MetadataService.CustomField();
+
+customField = new MetadataService.CustomField();
+customField.fullName = picklistapiname;
+customField.label = 'Segments';
+customField.type_x = 'Picklist';
+//customField.description = '';
+
+MetadataService.CustomField customField1 = (MetadataService.CustomField) metadataservice.readMetadata('CustomField', new String[] { picklistapiname}).getRecords()[0];
+for(MetadataService.CustomValue objCustomValue : customField1.valueSet.valueSetDefinition.value){
+    
+values.add(objCustomValue);    
+}
+
+//Create the valueSet for picklist type
+MetadataService.ValueSet picklistValueSet = new MetadataService.ValueSet();
+
+//For each ValueSet, we have either ValueSetValuesDefinition or ValueSettings and some other attributes
+MetadataService.ValueSetValuesDefinition valueDefinition = new MetadataService.ValueSetValuesDefinition();
+
+
+MetadataService.CustomValue customValue1 = new MetadataService.CustomValue();
+customValue1.fullName = 'test ten field'; //API name of picklist value
+customValue1.default_x = False;
+customValue1.description = '';
+customValue1.isActive = true;
+customValue1.label = 'test ten field';
+values.add(customValue1);
+
+//It will be list of CustomValue
+valueDefinition.value = values;
+valueDefinition.sorted = false;
+
+//set the valueSetDefinition
+picklistValueSet.valueSetDefinition = valueDefinition;
+picklistValueSet.controllingField = 'Dependent_Test__c';
+picklistValueSet.valueSettings = ValueSettingss;
+
+//Set the valueSet for picklist type
+customField.valueSet = picklistValueSet;
+customFields.add(customField);
+List<MetadataService.SaveResult> lstResults = metadataservice.updateMetadata(customFields);
+
+for (MetadataService.SaveResult objResult : lstResults) {
+    if (objResult.success) {
+        System.debug('Successfully updated');
+    }
+    else {                       
+        if(objResult.errors.size() > 0){
+          System.debug('eror : ' + objResult.errors[0].message);
+        }
+    }
+}
+
+
+
+
+
+
+}
