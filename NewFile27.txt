@@ -1,1 +1,1 @@
-This is vasss NewFile1.
+public class gitHubApi{}
