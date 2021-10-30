@@ -1,8 +1,4 @@
-/*Apex Class: NtnxDynamicPicklistCreation
-* Author: Vulsala Srinivasulu
-* Description: Creates the Field Dependencies from data entered in Deployment Stage records.
-* Jira Ticket: BA-79992
-*/
+
 
 public class NtnxDynamicPicklistCreation{
     
