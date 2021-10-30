@@ -1,12 +1,7 @@
 
 
 public class NtnxDynamicPicklistCreation{
-    
-    /*Method: createService
-    * Author: Vulsala Srinivasulu
-    * Description: Gets the MetadataService Api with SessionId
-    * Jira Ticket: BA-79992
-    */
+
     
     public static MetadataService.MetadataPort createService(){
         
